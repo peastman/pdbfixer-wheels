@@ -1,0 +1,60 @@
+{% set name = "pdbfixer" %}
+{% set version = "1.9" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  git_url: https://github.com/openmm/{{ name }}.git
+  git_rev: "6bf10e1"
+
+build:
+  noarch: python
+  number: 0
+  script: {{ PYTHON }} -m pip install . -vv --no-deps
+  entry_points:
+    - pdbfixer = pdbfixer.pdbfixer:main
+
+requirements:
+  build:
+    # START WHEEL CHANGES
+    - unzip           # [unix]
+    - patchelf        # [linux]
+    - auditwheel      # [linux]
+    - setuptools      # [linux]
+    - delocate >=0.10.6
+    - pip
+    # END WHEEL CHANGES
+  host:
+    - python
+    - pip
+  run:
+    - python >=3.6
+    - setuptools
+    - openmm >=8.0
+    - numpy
+
+test:
+  imports:
+    - pdbfixer
+  commands:
+    - pdbfixer --help
+
+about:
+  home: http://openmm.org/
+  license: MIT
+  license_family: MIT
+  license_file: LICENSE
+  summary: Fixes problems in PDB files
+  description: |
+    PDBFixer is an easy to use application for fixing problems
+    in Protein Data Bank files in preparation for simulating them.
+  doc_url: https://htmlpreview.github.io/?https://github.com/openmm/pdbfixer/blob/master/Manual.html
+  dev_url: https://github.com/openmm/pdbfixer
+
+extra:
+  recipe-maintainers:
+    - jaimergp
+    - peastman
+    - jchodera
