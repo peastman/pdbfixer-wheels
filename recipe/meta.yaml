@@ -12,7 +12,9 @@ source:
 build:
   noarch: python
   number: 0
-  script: {{ PYTHON }} -m pip install . -vv --no-deps
+  script:
+    - bash {{ RECIPE_DIR }}/build_openmm.sh   # [unix]
+    - {{ RECIPE_DIR }}\build_openmm.bat       # [win]
   entry_points:
     - pdbfixer = pdbfixer.pdbfixer:main
 
@@ -55,6 +57,5 @@ about:
 
 extra:
   recipe-maintainers:
-    - jaimergp
     - peastman
-    - jchodera
+    - mikemhenry
